@@ -35,19 +35,19 @@ class MoneyManager extends Component {
 
     this.setState(prev => ({
       transactionsList: prev.transactionsList.filter(each => each.id !== id),
+      balance:
+        deletedTransaction.type === 'Income'
+          ? prev.balance - parseInt(deletedTransaction.amount)
+          : prev.balance + parseInt(deletedTransaction.amount),
+      income:
+        deletedTransaction.type === 'Income'
+          ? prev.income - parseInt(deletedTransaction.amount)
+          : prev.income,
+      expenses:
+        deletedTransaction.type === 'Expenses'
+          ? prev.expenses - parseInt(deletedTransaction.amount)
+          : prev.expenses,
     }))
-
-    if (deletedTransaction.type === 'Income') {
-      this.setState(prev => ({
-        income: prev.income - deletedTransaction.amount,
-        balance: prev.balance - deletedTransaction.amount,
-      }))
-    } else {
-      this.setState(prev => ({
-        expenses: prev.expenses - deletedTransaction.amount,
-        balance: prev.balance + deletedTransaction.amount,
-      }))
-    }
   }
 
   onChangeTitle = event => {
@@ -65,6 +65,7 @@ class MoneyManager extends Component {
   onSubmitForm = event => {
     event.preventDefault()
     const {typeInput, amountInput, titleInput} = this.state
+
     if (typeInput === 'Income') {
       this.setState(prev => ({
         income: prev.income + parseInt(amountInput),
@@ -79,7 +80,7 @@ class MoneyManager extends Component {
     const newTransaction = {
       id: v4(),
       title: titleInput,
-      amount: amountInput,
+      amount: parseInt(amountInput),
       type: typeInput,
     }
     this.setState(prev => ({
