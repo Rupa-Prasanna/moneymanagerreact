@@ -23,10 +23,10 @@ class MoneyManager extends Component {
     transactionsList: [],
     titleInput: '',
     amountInput: '',
-    typeInput: 'Income',
     balance: 0,
     income: 0,
     expenses: 0,
+    typeInput: 'INCOME',
   }
 
   onDelete = id => {
@@ -40,11 +40,11 @@ class MoneyManager extends Component {
           ? prev.balance - parseInt(deletedTransaction.amount)
           : prev.balance + parseInt(deletedTransaction.amount),
       income:
-        deletedTransaction.type === 'Income'
+        deletedTransaction.type === 'INCOME'
           ? prev.income - parseInt(deletedTransaction.amount)
           : prev.income,
       expenses:
-        deletedTransaction.type === 'Expenses'
+        deletedTransaction.type === 'EXPENSES'
           ? prev.expenses - parseInt(deletedTransaction.amount)
           : prev.expenses,
     }))
@@ -66,7 +66,7 @@ class MoneyManager extends Component {
     event.preventDefault()
     const {typeInput, amountInput, titleInput} = this.state
 
-    if (typeInput === 'Income') {
+    if (typeInput === 'INCOME') {
       this.setState(prev => ({
         income: prev.income + parseInt(amountInput),
         balance: prev.balance + parseInt(amountInput),
@@ -87,7 +87,7 @@ class MoneyManager extends Component {
       transactionsList: [...prev.transactionsList, newTransaction],
       titleInput: '',
       amountInput: '',
-      typeInput: 'Income',
+      typeInput: 'INCOME',
     }))
   }
 
@@ -96,10 +96,10 @@ class MoneyManager extends Component {
       transactionsList,
       titleInput,
       amountInput,
-      typeInput,
       balance,
       income,
       expenses,
+      typeInput,
     } = this.state
 
     return (
@@ -178,8 +178,8 @@ class MoneyManager extends Component {
                 value={typeInput}
                 onChange={this.onChangeType}
               >
-                <option> Income </option>
-                <option> Expenses</option>
+                <option value="INCOME"> Income </option>
+                <option value="EXPENSES"> Expenses</option>
               </select>
               <div className="button">
                 <button type="submit"> Add </button>
